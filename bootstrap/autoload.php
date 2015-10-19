@@ -18,6 +18,17 @@ require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
+| Register Doctrine Annotations
+|--------------------------------------------------------------------------
+|
+| You cannot use a mixture of Doctrine Annotations (that come with the package)
+| and another metadata driver such as YAML or XML without loading the
+| annotations via Doctrine.
+*/
+Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+
+/*
+|--------------------------------------------------------------------------
 | Include The Compiled Class File
 |--------------------------------------------------------------------------
 |

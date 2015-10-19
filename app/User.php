@@ -11,10 +11,6 @@ use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable as AuthenticatableContrac
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="users")
- */
 class User implements AuthenticatableContract,
                       AuthorizableContract,
                       CanResetPasswordContract
@@ -22,21 +18,16 @@ class User implements AuthenticatableContract,
     use Authenticatable, Authorizable, CanResetPassword, Timestamps;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="string", length=36)
      * @var int
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string", unique=true)
      * @var string
      */
     protected $email;

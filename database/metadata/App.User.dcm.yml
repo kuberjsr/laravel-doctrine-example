@@ -1,0 +1,27 @@
+App\User:
+  type: entity
+  table: users
+  id:
+    id:
+      type: string
+      length: 36
+      generator:
+        strategy: NONE
+  fields:
+    name:
+      type: string
+    email:
+      type: string
+      unique: true
+    password:
+      type: string
+    rememberToken:
+      type: string
+      column: remember_token
+      nullable: true
+    createdAt:
+      type: datetime
+      column: created_at
+    updatedAt:
+      type: datetime
+      column: updated_at
