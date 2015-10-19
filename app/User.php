@@ -23,8 +23,8 @@ class User implements AuthenticatableContract,
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="string", length=36)
      * @var int
      */
     protected $id;
@@ -41,11 +41,17 @@ class User implements AuthenticatableContract,
      */
     protected $email;
 
-    public function __construct($name, $email, $password)
+    private function __construct($name, $email, $password)
     {
+        $this->id = uuid();
         $this->setName($name);
         $this->setEmail($email);
         $this->setPassword($password);
+    }
+
+    public static function create($name, $email, $password)
+    {
+        return new static($name, $email, $password);
     }
 
     /**

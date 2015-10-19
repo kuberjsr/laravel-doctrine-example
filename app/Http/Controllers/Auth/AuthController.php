@@ -63,7 +63,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User($data['name'], $data['email'], $data['password']);
+        $user = User::create($data['name'], $data['email'], $data['password']);
 
         // Store Immediately otherwise \Auth::login() cannot find this user
         $this->userRepository->storeImmediately($user);
