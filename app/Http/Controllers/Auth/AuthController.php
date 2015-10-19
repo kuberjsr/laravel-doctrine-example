@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\User\UserRepository;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -20,16 +21,22 @@ class AuthController extends Controller
     | a simple trait to add these behaviors. Why don't you explore it?
     |
     */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
+     * @param UserRepository $userRepository
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('guest', ['except' => 'getLogout']);
     }
 
@@ -58,8 +65,8 @@ class AuthController extends Controller
     {
         $user = new User($data['name'], $data['email'], $data['password']);
 
-        \EntityManager::persist($user);
-        \EntityManager::flush();
+        // Store Immediately otherwise \Auth::login() cannot find this user
+        $this->userRepository->storeImmediately($user);
 
         return $user;
     }

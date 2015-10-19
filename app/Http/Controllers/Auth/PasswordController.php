@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User\UserRepository;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordController extends Controller
@@ -17,14 +18,20 @@ class PasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-
     use ResetsPasswords;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * Create a new password controller instance.
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('guest');
     }
 
@@ -39,8 +46,8 @@ class PasswordController extends Controller
     {
         $user->setPassword($password);
 
-        \EntityManager::persist($user);
-        \EntityManager::flush();
+        // Store Immediately otherwise \Auth::login() cannot find this user
+        $this->userRepository->storeImmediately($user);
 
         \Auth::login($user);
     }
