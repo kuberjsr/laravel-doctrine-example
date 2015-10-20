@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
         );
 
         // Using Entities
-        $user = new \App\User('John Doe', 'j-doe@example.com', 'password');
+        $user = \App\User::create(g'John Doe', 'j-doe@example.com', 'password');
         \EntityManager::persist($user);
         \EntityManager::flush($user);
     }
