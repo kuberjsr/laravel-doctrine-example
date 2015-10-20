@@ -22,6 +22,12 @@ App\User:
     createdAt:
       type: datetime
       column: created_at
+      gedmo:
+        timestampable:
+          on: create
     updatedAt:
       type: datetime
       column: updated_at
+      gedmo:
+        timestampable:
+          on: update

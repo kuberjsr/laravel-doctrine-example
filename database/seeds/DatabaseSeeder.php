@@ -1,10 +1,20 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -12,10 +22,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
         $this->call(UserTableSeeder::class);
 
-        Model::reguard();
+        $this->entityManager->flush();
     }
 }

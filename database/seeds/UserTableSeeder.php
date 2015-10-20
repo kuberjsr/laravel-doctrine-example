@@ -1,9 +1,27 @@
 <?php
 
+use App\User;
+use App\User\UserRepository;
 use Illuminate\Database\Seeder;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 
 class UserTableSeeder extends Seeder
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    public function __construct(EntityManager $entityManager, UserRepository $userRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -12,11 +30,12 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         // Using DBAL
-        $conn = \EntityManager::getConnection();
+        $conn = $this->entityManager->getConnection();
 
         $conn->insert(
             'users',
             [
+                'id' => uuid(),
                 'name' => 'Mark',
                 'email' => 'mark@example.com',
                 'password' => bcrypt('password'),
@@ -26,8 +45,7 @@ class UserTableSeeder extends Seeder
         );
 
         // Using Entities
-        $user = \App\User::create(g'John Doe', 'j-doe@example.com', 'password');
-        \EntityManager::persist($user);
-        \EntityManager::flush($user);
+        $user = User::create('John Doe', 'j-doe@example.com', 'password');
+        $this->userRepository->store($user);
     }
 }
