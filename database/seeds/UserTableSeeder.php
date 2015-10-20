@@ -15,11 +15,16 @@ class UserTableSeeder extends Seeder
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var \Faker\Generator
+     */
+    private $faker;
 
-    public function __construct(EntityManager $entityManager, UserRepository $userRepository)
+    public function __construct(EntityManager $entityManager, UserRepository $userRepository, Faker\Generator $faker)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
+        $this->faker = $faker;
     }
 
     /**
@@ -47,5 +52,11 @@ class UserTableSeeder extends Seeder
         // Using Entities
         $user = User::create('John Doe', 'j-doe@example.com', 'password');
         $this->userRepository->store($user);
+
+        // Create multiple
+        for ($i = 0; $i < 50; $i++) {
+            $user = User::create($this->faker->name, $this->faker->email, str_random(10));
+            $this->userRepository->store($user);
+        }
     }
 }
