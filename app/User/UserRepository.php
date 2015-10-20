@@ -6,6 +6,8 @@ use App\User;
 
 interface UserRepository
 {
+    public function all($perPage = null, $pageName = null);
+
     /**
      * @param User $user
      */
